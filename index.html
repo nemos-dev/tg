@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Grand Mobile Qoidalari 🎮</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0c0f1d;
+            --card-bg: rgba(22, 27, 46, 0.85);
+            --card-border: rgba(99, 102, 241, 0.2);
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --accent: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --glow: rgba(99, 102, 241, 0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Montserrat', sans-serif; }
+
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; overflow-x: hidden; }
+
+        .app-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; background: rgba(12, 15, 29, 0.9); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .user-greeting { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: white; border: 2px solid rgba(255,255,255,0.2); }
+        .user-info h2 { font-size: 15px; font-weight: 700; font-family: 'Rajdhani', sans-serif; }
+        .user-info p { font-size: 11px; color: var(--text-muted); }
+
+        .header-actions { display: flex; gap: 8px; }
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--card-border); width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-main); cursor: pointer; font-size: 13px; font-weight: 700; }
+
+        .search-container { padding: 12px 16px; }
+        .search-box { position: relative; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; display: flex; align-items: center; padding: 0 14px; height: 46px; }
+        .search-input { width: 100%; background: transparent; border: none; color: var(--text-main); font-size: 14px; outline: none; }
+
+        .categories-scroll { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+        .cat-chip { background: var(--card-bg); border: 1px solid var(--card-border); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; color: var(--text-muted); }
+        .cat-chip.active { background: var(--primary-gradient); color: white; border-color: transparent; }
+
+        .rules-list { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+        .rule-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; transition: all 0.3s ease; cursor: pointer; }
+        .rule-code { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 8px; display: block; }
+        .rule-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+        .rule-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12, 15, 29, 0.95); backdrop-filter: blur(15px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; padding: 10px 8px; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; }
+        .nav-item.active { color: var(--primary); }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-sheet { background: #13182e; width: 100%; max-height: 85vh; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: transform 0.35s ease; }
+        .modal-overlay.active .modal-sheet { transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="user-greeting">
+            <div class="user-avatar" id="userAvatar">GM</div>
+            <div class="user-info">
+                <h2 id="userName">Grand Mobile</h2>
+                <p id="subGreeting">Правила GRND</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" id="langBtn" onclick="toggleLanguage()">🇺🇿 UZ</button>
+            <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Izlash / Поиск..." oninput="filterRules()">
+        </div>
+    </div>
+
+    <div class="categories-scroll" id="categoriesScroll">
+        <div class="cat-chip active" data-cat="all" onclick="switchCategory('all')">Barchasi / Все</div>
+        <div class="cat-chip" data-cat="general" onclick="switchCategory('general')">I. Umumiy / Общие</div>
+        <div class="cat-chip" data-cat="chat" onclick="switchCategory('chat')">II. Chat / Чат</div>
+        <div class="cat-chip" data-cat="admin" onclick="switchCategory('admin')">III. Admin / Админ</div>
+        <div class="cat-chip" data-cat="account" onclick="switchCategory('account')">IV. Akkaunt / Аккаунт</div>
+        <div class="cat-chip" data-cat="gameplay" onclick="switchCategory('gameplay')">V. O'yin / Игра</div>
+    </div>
+
+    <div class="rules-list" id="rulesList"></div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchNav('rules', this)"><span style="font-size: 20px;">📜</span><span id="navRules">Qoidalar</span></button>
+        <button class="nav-item" onclick="switchNav('about', this)"><span style="font-size: 20px;">ℹ️</span><span id="navAbout">Info</span></button>
+    </nav>
+
+    <div class="modal-overlay" id="ruleModal" onclick="closeModalOnBg(event)">
+        <div class="modal-sheet">
+            <h2 id="modalTitle" style="margin-bottom: 10px;"></h2>
+            <div id="modalDesc" style="font-size: 14px; line-height: 1.6; color: #cbd5e1;"></div>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let currentLang = 'uz';
+        const rulesData = [
+            { id: "1.1", cat: "general", code: "1.1", title: {uz: "Umumiy qoidalar", ru: "Общие положения"}, desc: {uz: "Ro'yxatdan o'tgan har bir foydalanuvchi qoidalarni o'qigan hisoblanadi.", ru: "Каждый пользователь обязан соблюдать правила сервера."} },
+            { id: "1.2", cat: "general", code: "1.2", title: {uz: "Admin vakili", ru: "Представитель администрации"}, desc: {uz: "O'zini admin deb tanishtirish taqiqlanadi.", ru: "Запрещено выдавать себя за администрацию."} },
+            { id: "2.1", cat: "chat", code: "2.1", title: {uz: "Haqoratlar", ru: "Оскорбления"}, desc: {uz: "O'yinchilarni yoki qarindoshlarini haqorat qilish taqiqlanadi.", ru: "Запрещены оскорбления игроков и родных."} },
+            { id: "4.1", cat: "account", code: "4.1", title: {uz: "Akkaunt savdosi", ru: "Продажа аккаунтов"}, desc: {uz: "Akkaunt sotish yoki sotib olish taqiqlanadi.", ru: "Запрещена продажа и покупка аккаунтов."} },
+            { id: "5.2", cat: "gameplay", code: "5.2", title: {uz: "Cheatlar", ru: "Читы"}, desc: {uz: "Har qanday begona dastur (cheat) taqiqlanadi.", ru: "Запрещено использование читов и стороннего ПО."} }
+        ];
+
+        function renderRules(cat = 'all', query = '') {
+            const list = document.getElementById('rulesList');
+            let filtered = cat === 'all' ? rulesData : rulesData.filter(r => r.cat === cat);
+
+            if (query) {
+                filtered = filtered.filter(r => r.title[currentLang].toLowerCase().includes(query.toLowerCase()));
+            }
+
+            list.innerHTML = filtered.map(r => `
+                <div class="rule-card" onclick="openModal('${r.id}')">
+                    <span class="rule-code">${r.code}</span>
+                    <h4 class="rule-title">${r.title[currentLang]}</h4>
+                    <p class="rule-desc">${r.desc[currentLang]}</p>
+                </div>
+            `).join('');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'uz' ? 'ru' : 'uz';
+            document.getElementById('langBtn').innerText = currentLang === 'uz' ? '🇺🇿 UZ' : '🇷🇺 RU';
+            renderRules();
+        }
+
+        function openModal(id) {
+            const r = rulesData.find(x => x.id === id);
+            document.getElementById('modalTitle').innerText = r.title[currentLang];
+            document.getElementById('modalDesc').innerText = r.desc[currentLang];
+            document.getElementById('ruleModal').classList.add('active');
+        }
+
+        function closeModalOnBg(e) { if(e.target.id === 'ruleModal') document.getElementById('ruleModal').classList.remove('active'); }
+        function switchCategory(cat) { renderRules(cat); }
+        function filterRules() { renderRules(currentCategory, document.getElementById('searchInput').value); }
+        function switchNav(tab, el) { /* ... */ }
+
+        renderRules();
+    </script>
+</body>
+</html>
