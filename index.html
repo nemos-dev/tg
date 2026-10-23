@@ -3,74 +3,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Grand Mobile Rules 🎮</title>
+    <title>Grand Mobile Rules 🎮 by Seven</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050a05;
-            --card-bg: rgba(10, 20, 10, 0.9);
-            --card-border: rgba(34, 197, 94, 0.3);
+            --bg-color: #030704;
+            --card-bg: rgba(9, 20, 11, 0.85);
+            --card-border: rgba(34, 197, 94, 0.25);
             --primary: #22c55e;
-            --primary-gradient: linear-gradient(135deg, #166534 0%, #22c55e 100%);
-            --accent: #bef264;
+            --primary-glow: #10b981;
+            --primary-gradient: linear-gradient(135deg, #15803d 0%, #22c55e 50%, #4ade80 100%);
+            --accent: #a3e635;
             --text-main: #f0fdf4;
             --text-muted: #86efac;
             --danger: #ef4444;
-            --glow: rgba(34, 197, 94, 0.3);
+            --warning: #f59e0b;
+            --glow: 0 0 20px rgba(34, 197, 94, 0.35);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Montserrat', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; overflow-x: hidden; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 95px;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(34, 197, 94, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.12) 0%, transparent 45%);
+        }
 
         /* HEADER */
-        .app-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; background: rgba(5, 10, 5, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--primary); }
-        .user-greeting { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; box-shadow: 0 0 15px var(--glow); }
-        .header-actions { display: flex; gap: 8px; }
-        .icon-btn { background: var(--card-bg); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 12px; color: var(--primary); cursor: pointer; font-size: 13px; font-weight: 700; }
+        .app-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3, 7, 4, 0.95);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.25);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
 
-        /* SEARCH */
-        .search-container { padding: 12px 16px; }
-        .search-box { background: var(--card-bg); border: 1px solid var(--primary); border-radius: 14px; display: flex; align-items: center; padding: 0 14px; height: 48px; box-shadow: 0 0 15px var(--glow); }
-        .search-input { width: 100%; background: transparent; border: none; color: var(--text-main); font-size: 14px; outline: none; padding-left: 10px; }
+        .user-greeting {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        /* CATEGORIES */
-        .categories-scroll { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; }
-        .cat-chip { background: var(--card-bg); border: 1px solid var(--card-border); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; color: var(--text-muted); }
-        .cat-chip.active { background: var(--primary-gradient); color: #000; border-color: transparent; }
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            color: #000;
+            box-shadow: var(--glow);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
 
-        /* RULES LIST */
-        .rules-list { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
-        .rule-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; position: relative; transition: transform 0.2s; cursor: pointer; }
-        .rule-card:active { transform: scale(0.98); }
-        .rule-code { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px; }
-        .rule-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #fff; }
-        .rule-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .user-info h2 {
+            font-size: 15px;
+            font-weight: 800;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .author-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--accent);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .user-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* PROMO HERO CARD */
+        .hero-banner {
+            margin: 14px 16px;
+            background: linear-gradient(135deg, rgba(21, 128, 61, 0.25) 0%, rgba(6, 78, 59, 0.4) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 15px rgba(34, 197, 94, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::after {
+            content: '⚡';
+            position: absolute;
+            right: -10px;
+            bottom: -15px;
+            font-size: 75px;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .hero-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 17px;
+            font-weight: 900;
+            color: #86efac;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .hero-text p {
+            font-size: 12px;
+            color: #d1fae5;
+        }
+
+        .hero-author {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* SEARCH BAR */
+        .search-container {
+            padding: 0 16px 12px;
+        }
+
+        .search-box {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            height: 48px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            padding-left: 8px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(134, 239, 172, 0.5);
+        }
+
+        /* CATEGORIES TABS */
+        .categories-scroll {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-chip {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+        }
+
+        .cat-chip.active {
+            background: var(--primary-gradient);
+            color: #000;
+            border-color: transparent;
+            box-shadow: 0 2px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        /* SECTION STATS */
+        .section-header {
+            padding: 0 16px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .section-header h3 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        .section-header span {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* RULES CARDS */
+        .rules-list {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rule-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+            position: relative;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+
+        .rule-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .rule-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .rule-code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--accent);
+            background: rgba(34, 197, 94, 0.15);
+            padding: 3px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .punish-pill {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .punish-ban {
+            background: rgba(239, 68, 68, 0.18);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+
+        .punish-jail {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde047;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .punish-warn {
+            background: rgba(34, 197, 94, 0.18);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.35);
+        }
+
+        .rule-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .rule-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .rule-footer {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: rgba(134, 239, 172, 0.7);
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bookmark-btn.saved {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
 
         /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-sheet { background: #0a140a; border-top: 2px solid var(--primary); border-radius: 24px 24px 0 0; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; transform: translateY(100%); transition: transform 0.35s ease; }
-        .modal-overlay.active .modal-sheet { transform: translateY(0); }
-        .modal-title { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 12px; font-family: 'Rajdhani', sans-serif; }
-        .modal-body { font-size: 15px; line-height: 1.6; color: #f0fdf4; }
-        .punishment-box { background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--danger); padding: 12px; margin-top: 15px; border-radius: 4px; color: #fca5a5; font-size: 14px; font-weight: 600; }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
 
-        /* NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5, 10, 5, 0.98); border-top: 1px solid var(--primary); display: flex; justify-content: space-around; padding: 12px; z-index: 100; }
-        .nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; }
-        .nav-item.active { color: var(--primary); }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-sheet {
+            background: #081209;
+            border-top: 2px solid var(--primary);
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px 20px 36px;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -10px 40px rgba(34, 197, 94, 0.2);
+        }
+
+        .modal-overlay.active .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .modal-handle {
+            width: 44px;
+            height: 4px;
+            background: rgba(34, 197, 94, 0.3);
+            border-radius: 2px;
+            margin: 0 auto 18px;
+        }
+
+        .modal-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #dcfce7;
+            margin-bottom: 20px;
+        }
+
+        .punish-box {
+            background: rgba(239, 68, 68, 0.12);
+            border-left: 4px solid var(--danger);
+            padding: 12px 14px;
+            border-radius: 0 12px 12px 0;
+            color: #fca5a5;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-act {
+            flex: 1;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-share {
+            background: var(--primary-gradient);
+            color: #000;
+            box-shadow: var(--glow);
+        }
+
+        /* QUIZ */
+        .quiz-view {
+            display: none;
+            padding: 0 16px;
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .quiz-opt {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .quiz-opt.correct {
+            background: rgba(34, 197, 94, 0.25);
+            border-color: var(--primary);
+            color: #86efac;
+        }
+
+        .quiz-opt.incorrect {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--danger);
+            color: #fca5a5;
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(3, 7, 4, 0.96);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(34, 197, 94, 0.3);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 8px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            width: 25%;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #064e3b;
+            color: #a7f3d0;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            border: 1px solid var(--primary);
+            z-index: 2000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <header class="app-header">
         <div class="user-greeting">
-            <div class="user-avatar" id="userAvatar">GM</div>
+            <div class="user-avatar" id="userAvatar">7</div>
             <div class="user-info">
-                <h2 id="userName">O'yinchi</h2>
-                <p id="subGreeting">Qoidalar / Правила</p>
+                <h2>
+                    <span id="userName">Grand Mobile</span>
+                    <span class="author-badge">BY SEVEN</span>
+                </h2>
+                <p id="subGreeting">Grand Mobile RP Qoidalari</p>
             </div>
         </div>
         <div class="header-actions">
@@ -78,138 +603,581 @@
         </div>
     </header>
 
+    <!-- HERO PROMO -->
+    <div class="hero-banner" id="heroBanner">
+        <div class="hero-text">
+            <h3>GRAND MOBILE RP</h3>
+            <p id="heroDesc">Barcha server qoidalari va jazo stavkalari bazasi</p>
+            <div class="hero-author">👑 Ishlab chiquvchi: Seven</div>
+        </div>
+    </div>
+
+    <!-- SEARCH -->
     <div class="search-container">
         <div class="search-box">
-            <span>🔍</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="Izlash / Поиск..." oninput="filterRules()">
+            <span style="color: var(--primary); font-size: 16px;">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Qoidani izlash (DM, Ban, 2.1, Mute)..." oninput="filterRules()">
         </div>
     </div>
 
+    <!-- CATEGORIES -->
     <div class="categories-scroll" id="categoriesScroll">
-        <div class="cat-chip active" data-cat="all" onclick="switchCategory('all')">Barchasi / Все</div>
-        <div class="cat-chip" data-cat="1" onclick="switchCategory('1')">I. Umumiy / Общие</div>
-        <div class="cat-chip" data-cat="2" onclick="switchCategory('2')">II. Chat / Чат</div>
+        <div class="cat-chip active" data-cat="all" onclick="switchCategory('all')">Barchasi</div>
+        <div class="cat-chip" data-cat="1" onclick="switchCategory('1')">I. Umumiy</div>
+        <div class="cat-chip" data-cat="2" onclick="switchCategory('2')">II. Chat</div>
         <div class="cat-chip" data-cat="3" onclick="switchCategory('3')">III. Admin</div>
-        <div class="cat-chip" data-cat="4" onclick="switchCategory('4')">IV. Akkaunt / Аккаунт</div>
-        <div class="cat-chip" data-cat="5" onclick="switchCategory('5')">V. Gameplay</div>
+        <div class="cat-chip" data-cat="4" onclick="switchCategory('4')">IV. Akkaunt/Mulk</div>
+        <div class="cat-chip" data-cat="5" onclick="switchCategory('5')">V. O'yin/Gameplay</div>
+        <div class="cat-chip" data-cat="saved" onclick="switchCategory('saved')">⭐ Saqlanganlar</div>
     </div>
 
-    <div class="rules-list" id="rulesList"></div>
+    <!-- RULES VIEW -->
+    <div id="rulesView">
+        <div class="section-header">
+            <h3 id="sectionHeading">Qoidalar Ro'yxati</h3>
+            <span id="rulesCount">0 ta qoida</span>
+        </div>
+        <div class="rules-list" id="rulesList"></div>
+    </div>
 
+    <!-- QUIZ VIEW -->
+    <div class="quiz-view" id="quizView">
+        <div class="section-header">
+            <h3>RP Bilimini Sinash</h3>
+            <span id="quizScore">1 / 5</span>
+        </div>
+        <div class="quiz-card">
+            <h4 id="quizQuestion" style="font-size: 16px; margin-bottom: 20px; line-height: 1.4;">Savol yuklanmoqda...</h4>
+            <div id="quizOptions"></div>
+            <button class="btn-act btn-share" id="quizNextBtn" style="width: 100%; display: none; margin-top: 10px;" onclick="nextQuiz()">Keyingi savol ➡️</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="switchCategory('all')"><span>📜</span><span id="navRules">Qoidalar</span></button>
-        <button class="nav-item" onclick="showInfo()"><span>ℹ️</span><span id="navInfo">Info</span></button>
+        <button class="nav-item active" onclick="switchNav('rules', this)">
+            <span style="font-size: 20px;">📜</span>
+            <span id="navRules">Qoidalar</span>
+        </button>
+        <button class="nav-item" onclick="switchNav('quiz', this)">
+            <span style="font-size: 20px;">🧠</span>
+            <span id="navQuiz">Test</span>
+        </button>
+        <button class="nav-item" onclick="switchNav('saved', this)">
+            <span style="font-size: 20px;">⭐</span>
+            <span id="navSaved">Saqlangan</span>
+        </button>
+        <button class="nav-item" onclick="switchNav('author', this)">
+            <span style="font-size: 20px;">👑</span>
+            <span id="navAuthor">Muallif</span>
+        </button>
     </nav>
 
+    <!-- MODAL -->
     <div class="modal-overlay" id="ruleModal" onclick="closeModal(event)">
         <div class="modal-sheet" onclick="event.stopPropagation()">
-            <div id="modalCode" class="rule-code"></div>
+            <div class="modal-handle"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span id="modalCode" class="rule-code"></span>
+                <span id="modalPill" class="punish-pill"></span>
+            </div>
             <h2 id="modalTitle" class="modal-title"></h2>
             <div id="modalBody" class="modal-body"></div>
-            <div id="modalPunishment" class="punishment-box"></div>
+            <div id="modalPunish" class="punish-box"></div>
+
+            <div class="modal-actions">
+                <button class="btn-act btn-copy" onclick="copyRule()">📋 Nusxalash</button>
+                <button class="btn-act btn-share" onclick="shareRule()">📤 Do'stlarga ulashish</button>
+            </div>
         </div>
     </div>
 
+    <div class="toast" id="toastMsg">Nusxalandi! 📋</div>
+
     <script>
+        // Telegram WebApp Setup
         let tg = window.Telegram.WebApp;
         tg.expand();
-        let currentLang = 'uz';
+        try {
+            tg.setHeaderColor('#030704');
+            tg.setBackgroundColor('#030704');
+        } catch(e) {}
 
+        let currentLang = 'uz';
+        let savedList = JSON.parse(localStorage.getItem('gm_seven_saved') || '[]');
+
+        // Multilingual Rules Data (Full I - V by Seven)
         const rulesData = [
             // I. ОБЩИЕ ПОЛОЖЕНИЯ
-            { id: "1.1", cat: "1", code: "1.1", title: {uz: "Qoidalarni qabul qilish", ru: "Принятие правил"}, desc: {uz: "Hisob yaratish orqali siz barcha qoidalarga rozilik bildirasiz.", ru: "Создавая аккаунт, вы принимаете правила серверов."}, pun: {uz: "Bilmaslik jazodan ozod qilmaydi.", ru: "Незнание правил не освобождает от ответственности."} },
-            { id: "1.2", cat: "1", code: "1.2", title: {uz: "Ma'muriyat nomidan aldash", ru: "Ввод в заблуждение"}, desc: {uz: "O'zini admin yoki ishlab chiquvchi deb tanishtirish taqiqlanadi.", ru: "Запрещено представляться администрацией или разработчиками."}, pun: {uz: "Jazo: 3-7 kunlik blokdan butunlaygacha.", ru: "Наказание: блок от 3 дней до навсегда."} },
-            { id: "1.3", cat: "1", code: "1.3", title: {uz: "Qoidalardagi bo'shliqlardan foydalanish", ru: "Обход правил"}, desc: {uz: "Qoidalardagi kamchiliklardan foydalanib jazo chetlab o'tish taqiqlanadi.", ru: "Запрещены попытки избежать наказания через пробелы в правилах."}, pun: {uz: "Jazo: 3-31 kunlik blok.", ru: "Наказание: блок от 3 до 31 дня."} },
-            { id: "1.6", cat: "1", code: "1.6", title: {uz: "Nik-neym qoidalari", ru: "Никнеймы"}, desc: {uz: "Adminlar yoki taniqli shaxslarga o'xshash niklar taqiqlanadi.", ru: "Запрещены никнеймы, схожие с администрацией/медиа."}, pun: {uz: "Jazo: Blok 31 kungacha.", ru: "Наказание: блок до 31 дня."} },
+            {
+                id: "1.1", cat: "1", code: "1.1",
+                title: { uz: "Qoidalarni qabul qilish", ru: "Принятие правил сервера" },
+                desc: {
+                    uz: "Akkaunt ochish orqali siz barcha qoidalarni so'zsiz qabul qilasiz. Qoidalarni bilmaslik jazodan ozod qilmaydi.",
+                    ru: "Создавая аккаунт, вы безусловно принимаете правила серверов. Незнание правил не является оправданием."
+                },
+                punish: { uz: "Barcha o'yinchilarga birdek jazo qo'llaniladi.", ru: "Правила одинаково действуют для всех игроков." }
+            },
+            {
+                id: "1.2", cat: "1", code: "1.2",
+                title: { uz: "Ma'muriyat nomidan aldash", ru: "Ввод в заблуждение от имени администрации" },
+                desc: {
+                    uz: "O'zini admin, dasturchi yoki o'yin rahbariyati deb tanishtirish qat'iyan taqiqlanadi (nik, xabar va murojaatlarda).",
+                    ru: "Запрещено представляться администрацией, разработчиками или руководством игры."
+                },
+                punish: { uz: "Blok: 3-7 kundan 31 kunga yoki butunlay ban.", ru: "Блокировка: от 3 до 7 дней; грубое: от 31 дня до навсегда." }
+            },
+            {
+                id: "1.3", cat: "1", code: "1.3",
+                title: { uz: "Qoidadagi kamchiliklardan foydalanish", ru: "Обход правил через пробелы" },
+                desc: {
+                    uz: "Qoidadagi noaniqliklar orqali jazodan qochishga urinish halol o'yin qoidalariga zid hisoblanadi.",
+                    ru: "Запрещены попытки избежать наказания через использование пробелов или неоднозначностей в правилах."
+                },
+                punish: { uz: "Blok: 3 kundan 31 kungacha.", ru: "Блокировка: от 3 до 31 дня." }
+            },
+            {
+                id: "1.4", cat: "1", code: "1.4",
+                title: { uz: "Akkaunt xavfsizligi", ru: "Сохранность аккаунта и имущества" },
+                desc: {
+                    uz: "O'yinchi o'z akkaunti va mulki xavfsizligiga shaxsan javobgardir. Yo'qotilgan mulk qaytarilmaydi.",
+                    ru: "Игрок лично отвечает за сохранность своего аккаунта. Администрация не восстанавливает имущество."
+                },
+                punish: { uz: "Mulk qaytarib berilmaydi.", ru: "Имущество не восстанавливается." }
+            },
+            {
+                id: "1.6", cat: "1", code: "1.6",
+                title: { uz: "Nik-neym qoidalari", ru: "Правила никнеймов" },
+                desc: {
+                    uz: "Adminlar yoki media-hamkorlarga o'xshash, haqoratli yoki nojo'ya so'zlardan iborat niklar taqiqlanadi.",
+                    ru: "Запрещены никнеймы, схожие с администрацией и медиа-партнерами, а также с оскорблениями."
+                },
+                punish: { uz: "Ogohlantirish yoki 31 kungacha blok.", ru: "Устное предупреждение / Блокировка до 31 дня." }
+            },
 
             // II. ПРАВИЛА ОБЩЕНИЯ
-            { id: "2.1", cat: "2", code: "2.1", title: {uz: "Haqoratlar", ru: "Оскорбления"}, desc: {uz: "O'yinchini yoki uning yaqinlarini haqorat qilish taqiqlanadi.", ru: "Запрещено оскорбление личности игрока и его родственников."}, pun: {uz: "Ota-ona uchun: 3-10 kunlik blok / 180 min mute.", ru: "За родных: блок 3-10 дней / 180 мин мут."} },
-            { id: "2.2", cat: "2", code: "2.2", title: {uz: "Taqiqlangan targ'ibotlar", ru: "Запрещенная пропаганда"}, desc: {uz: "Narkotik, porno, ekstremizm va suitsid targ'iboti taqiqlanadi.", ru: "Запрещена пропаганда наркотиков, порнографии, экстремизма."}, pun: {uz: "Jazo: 3 kundan butunlay blokkacha.", ru: "Наказание: блок от 3 дней до навсегда."} },
-            { id: "2.3", cat: "2", code: "2.3", title: {uz: "Reklama", ru: "Реклама"}, desc: {uz: "Boshqa sayt yoki ijtimoiy tarmoqlarni reklama qilish taqiqlanadi.", ru: "Запрещена любая реклама сторонних ресурсов."}, pun: {uz: "Jazo: 60-120 min mute / Butunlay blok.", ru: "Наказание: мут 60-120 мин / Пермач."} },
-            { id: "2.4", cat: "2", code: "2.4", title: {uz: "Irqchilik va Siyosat", ru: "Расизм и Политика"}, desc: {uz: "Din, irq va siyosatni muhokama qilish taqiqlanadi.", ru: "Запрещены расизм, ксенофобия и обсуждение политики."}, pun: {uz: "Jazo: 60-180 min mute / 1-31 kun blok.", ru: "Наказание: мут 60-180 мин / 1-31 день блок."} },
+            {
+                id: "2.1", cat: "2", code: "2.1",
+                title: { uz: "Haqoratlar va Yaqinlarni tilga olish", ru: "Оскорбления и Упоминание родных" },
+                desc: {
+                    uz: "O'yinchini, uning yaqinlari va oila a'zolarini har qanday chatda haqorat qilish qat'iyan man etiladi.",
+                    ru: "Запрещено прямое или завуалированное оскорбление личности игрока и его родственников в любом чате."
+                },
+                punish: { uz: "O'yinchiga: Mute 15-30 min. Ota-onaga: Mute 90-180 min / Blok 3-10 kun.", ru: "Оскорбление: Mute 15-30м; Родные: Mute 90-180м / Бан 3-10 дней." }
+            },
+            {
+                id: "2.2", cat: "2", code: "2.2",
+                title: { uz: "Taqiqlangan mavzular targ'iboti", ru: "Запрещенная пропаганда" },
+                desc: {
+                    uz: "Giyohvandlik, zo'ravonlik, ekstremizm, suitsid va noqonuniy harakatlarni targ'ib qilish taqiqlanadi.",
+                    ru: "Запрещена пропаганда наркотиков, насилия, экстремизма, суицида и незаконных действий."
+                },
+                punish: { uz: "Blok: 3-14 kundan butunlay blokkacha.", ru: "Блокировка: от 3 до 14 дней до навсегда." }
+            },
+            {
+                id: "2.3", cat: "2", code: "2.3",
+                title: { uz: "Reklama taqiqi", ru: "Запрет рекламы" },
+                desc: {
+                    uz: "Har qanday begona saytlar, ijtimoiy tarmoqlar, kanallar va loyihalarni reklama qilish taqiqlanadi.",
+                    ru: "Запрещена любая реклама сторонних сайтов, соцсетей, каналов и других проектов."
+                },
+                punish: { uz: "Mute 60-120 min / Blok: 31 kundan butunlaygacha.", ru: "MUTE 60-120 мин / Блокировка от 31 дня до навсегда." }
+            },
+            {
+                id: "2.4", cat: "2", code: "2.4",
+                title: { uz: "Irqchilik va Siyosat", ru: "Расизм, Ксенофобия, Политика" },
+                desc: {
+                    uz: "Millatlararo adovat qo'zg'atish, dinni haqorat qilish va real siyosatni muhokama qilish taqiqlanadi.",
+                    ru: "Запрещены расизм, разжигание розни, оскорбление религии, политика и нацистская символика."
+                },
+                punish: { uz: "Mute 60-180 min yoki Blok 1-31 kun.", ru: "MUTE 60-180 мин или Блокировка от 1 до 31 дня." }
+            },
+            {
+                id: "2.5", cat: "2", code: "2.5",
+                title: { uz: "Mikrofonda ortiqcha shovqin / Musiqa", ru: "Посторонние звуки в микрофон" },
+                desc: {
+                    uz: "Mikrofonga musiqa qo'yish, baqirish, nojo'ya dasturlar orqali xalal berish taqiqlanadi.",
+                    ru: "Запрещены аудиотрансляции в микрофон: музыка, крики, шумы и создание помех."
+                },
+                punish: { uz: "Mute: 20 daqiqadan 60 daqiqagacha.", ru: "MUTE: от 20 до 60 минут." }
+            },
+            {
+                id: "2.6", cat: "2", code: "2.6",
+                title: { uz: "Doksing va Tahdidlar (IC/OOC)", ru: "Конфликты IC/OOC и Доксинг" },
+                desc: {
+                    uz: "O'yinchining shaxsiy ma'lumotlarini tarqatish, tahdid qilish yoki bosim o'tkazish qat'iy taqiqlanadi.",
+                    ru: "Запрещено переносить конфликты из IC в OOC, угрожать игрокам и использовать доксинг."
+                },
+                punish: { uz: "Blok: 7 kundan butunlaygacha.", ru: "Блокировка: от 7 дней до навсегда." }
+            },
 
             // III. ВЗАИМОДЕЙСТВИЕ С АДМИНИСТРАЦИЕЙ
-            { id: "3.1", cat: "3", code: "3.1", title: {uz: "Reportdan noto'g'ri foydalanish", ru: "Злоупотребление репортом"}, desc: {uz: "Reportga off-top yoki pul so'rab yozish taqiqlanadi.", ru: "Запрещен оффтоп и флуд в репорт."}, pun: {uz: "Jazo: 30 min mute report.", ru: "Наказание: мут репорта до 30 мин."} },
-            { id: "3.2", cat: "3", code: "3.2", title: {uz: "Adminga nisbatan qo'polik", ru: "Хамство администрации"}, desc: {uz: "Adminlarni aldash yoki haqorat qilish taqiqlanadi.", ru: "Запрещены хамство, клевета и обман в отношении администрации."}, pun: {uz: "Jazo: 3-31 kunlik blok.", ru: "Наказание: блок от 3 до 31 дня."} },
+            {
+                id: "3.1", cat: "3", code: "3.1",
+                title: { uz: "Reportdan noto'g'ri foydalanish", ru: "Злоупотребление репортом" },
+                desc: {
+                    uz: "Reportga off-top yozish, flud qilish, pul, mashina yoki teleport so'rash taqiqlanadi.",
+                    ru: "Запрещено использовать репорт не по назначению: оффтоп, флуд, просьбы денег и телепорта."
+                },
+                punish: { uz: "Mute Report: 30 daqiqagacha.", ru: "Предупреждение / MUTE REPORT до 30 минут." }
+            },
+            {
+                id: "3.2", cat: "3", code: "3.2",
+                title: { uz: "Adminga hurmatsizlik va yolg'on", ru: "Хамство и обман администрации" },
+                desc: {
+                    uz: "Ma'muriyat xodimlariga nisbatan qo'pollik qilish, ularni kamsitish yoki aldash taqiqlanadi.",
+                    ru: "Запрещены хамство, дискредитация, клевета и обман в отношении администрации."
+                },
+                punish: { uz: "Mute 30-60 min / Blok: 3 kundan 31 kungacha.", ru: "MUTE 30-60 мин / Блокировка от 3 до 31 дня." }
+            },
+            {
+                id: "3.3", cat: "3", code: "3.3",
+                title: { uz: "Admin ishiga xalal berish", ru: "Помеха работе администрации" },
+                desc: {
+                    uz: "Adminlar ishiga qasddan xalal berish, provokatsiya qilish taqiqlanadi.",
+                    ru: "Запрещено мешать работе администрации сервера (провокации, помехи)."
+                },
+                punish: { uz: "Demorgan: 60 daqiqagacha.", ru: "Предупреждение / DEMORGAN до 60 минут." }
+            },
 
             // IV. АККАУНТЫ И ИМУЩЕСТВО
-            { id: "4.1", cat: "4", code: "4.1", title: {uz: "Valyuta mahinatsiyasi", ru: "Махинации"}, desc: {uz: "Akkaunt sotish, sotib olish va valyuta bilan firibgarlik taqiqlanadi.", ru: "Запрещены любые махинации с игровой валютой и продажа аккаунтов."}, pun: {uz: "Jazo: 31 kundan butunlay blokkacha.", ru: "Наказание: блок от 31 дня до навсегда."} },
-            { id: "4.4", cat: "4", code: "4.4", title: {uz: "Real pulga savdo", ru: "Продажа за реал"}, desc: {uz: "Mulkni real pulga sotish yoki sotib olish taqiqlanadi.", ru: "Запрещены сделки за реальные деньги."}, pun: {uz: "Jazo: Butunlay blok + mulkni nol qilish.", ru: "Наказание: Пермач + обнуление."} },
-            { id: "4.5", cat: "4", code: "4.5", title: {uz: "Sovg'a limiti", ru: "Лимит подарка"}, desc: {uz: "Kuniga 30,000,000 rubldan ortiq sovg'a berish taqiqlanadi.", ru: "Запрещена передача имущества свыше 30.000.000 руб в сутки."}, pun: {uz: "Jazo: 31 kun blok + mulkni nol qilish.", ru: "Наказание: блок до 31 дня + обнуление."} },
+            {
+                id: "4.1", cat: "4", code: "4.1",
+                title: { uz: "Valyuta mahinatsiyalari va Akkaunt savdosi", ru: "Махинации и продажа аккаунтов" },
+                desc: {
+                    uz: "Akkaunt sotish, sotib olish, o'tkazish hamda bozor narxidan 50% ga arzon/qimmat oldi-sotdi taqiqlanadi.",
+                    ru: "Запрещены махинации с валютой, мошенничество, продажа/покупка аккаунтов."
+                },
+                punish: { uz: "Blok: 3-7 kundan butunlay blokkacha.", ru: "Блокировка: от 3-7 дней до навсегда." }
+            },
+            {
+                id: "4.3", cat: "4", code: "4.3",
+                title: { uz: "Biznes egaligi qoidalari", ru: "Владение бизнесом" },
+                desc: {
+                    uz: "Bitta serverda faqat bitta biznesga egalik qilish mumkin. Boshqa akkauntlarga soxta o'tkazish man etiladi.",
+                    ru: "Игрок может владеть только одним бизнесом на каждом сервере."
+                },
+                punish: { uz: "Blok: 31 kungacha barcha ishtirokchilar.", ru: "Блокировка до 31 дня всех участников." }
+            },
+            {
+                id: "4.4", cat: "4", code: "4.4",
+                title: { uz: "Real pulga savdo (RUR/USD)", ru: "Сделки за реальные деньги" },
+                desc: {
+                    uz: "O'yin mulki, mashinalar va valyutani real pul evaziga sotish yoki sotib olish qat'iy taqiqlanadi.",
+                    ru: "Запрещены любые сделки с игровым имуществом и валютой за реальные деньги."
+                },
+                punish: { uz: "Butunlay Blok (Permaban) + Mulkni nollash.", ru: "Блокировка навсегда с обнулением имущества." }
+            },
+            {
+                id: "4.5", cat: "4", code: "4.5",
+                title: { uz: "Sovg'a limiti (30.000.000)", ru: "Лимит подарка (30 млн)" },
+                desc: {
+                    uz: "Bir sutkada 30.000.000 rubldan ortiq mulk yoki valyutani tekinga (sovg'a sifatida) berish taqiqlanadi.",
+                    ru: "Запрещена передача валюты и имущества в подарок свыше 30.000.000 рублей в сутки."
+                },
+                punish: { uz: "31 kunlik blok + hadya qilingan mulkni nollash.", ru: "Блокировка до 31 дня с обнулением имущества." }
+            },
 
             // V. ИГРОВОЙ ПРОЦЕСС
-            { id: "5.2", cat: "5", code: "5.2", title: {uz: "Cheatlar va Boglar", ru: "Читы и Баги"}, desc: {uz: "Yordamchi dasturlar va boglardan foydalanish taqiqlanadi.", ru: "Запрещено использование ПО (читов) и багов игры."}, pun: {uz: "Cheat uchun: 7-31 kun blok. Bog uchun: Warn/3 kun blok.", ru: "Читы: 7-31 день блок. Багоюз: Warn/3 дня блок."} },
-            { id: "5.3", cat: "5", code: "5.3", title: {uz: "RP dan qochish", ru: "Уход от RP"}, desc: {uz: "O'yindan chiqib ketish yoki AFK orqali RP dan qochish taqiqlanadi.", ru: "Запрещено покидать RP-ситуацию через выход из игры или AFK."}, pun: {uz: "Jazo: 60 min Demorgan.", ru: "Наказание: деморган 60 мин."} },
-            { id: "5.4", cat: "5", code: "5.4", title: {uz: "Uy hududida DM", ru: "DM у дома"}, desc: {uz: "Uy yoki kvartira kirish qismida o'ldirish taqiqlanadi.", ru: "Запрещено убийство у входа в дом или квартиру."}, pun: {uz: "Jazo: 120 min Demorgan.", ru: "Наказание: деморган 120 мин."} },
-            { id: "5.6", cat: "5", code: "5.6", title: {uz: "Amoral harakatlar", ru: "Аморальные действия"}, desc: {uz: "Inson qadr-qimmatini kamsituvchi harakatlar taqiqlanadi.", ru: "Запрещены действия, унижающие достоинство (домогательства)."}, pun: {uz: "Jazo: 7 kungacha blok.", ru: "Наказание: блок до 7 дней."} }
+            {
+                id: "5.2", cat: "5", code: "5.2",
+                title: { uz: "Cheatlar, Avtokliker va Boglar", ru: "Читы, автокликеры и багоюз" },
+                desc: {
+                    uz: "Har qanday cheat, bot, avtokliker, skriptlar va o'yin xatolaridan (bag) ustunlik olish taqiqlanadi.",
+                    ru: "Запрещено использование читов, автокликеров, стороннего ПО и багов игры."
+                },
+                punish: { uz: "Bag: Warn / 3 kun ban. Cheat: 7-31 kun ban.", ru: "Багоюз: WARN / 3 дня бана. Читы: от 7 до 31 дня." }
+            },
+            {
+                id: "5.3", cat: "5", code: "5.3",
+                title: { uz: "RP dan qochish (Off / AFK)", ru: "Уход от RP-ситуации" },
+                desc: {
+                    uz: "Boshlangan RP holatidan o'yindan chiqib ketish, AFK bo'lish yoki suvga sakrab qochish taqiqlanadi.",
+                    ru: "Запрещено намеренно покидать RP-ситуацию через выход из игры, AFK или воду."
+                },
+                punish: { uz: "Demorgan: 60 daqiqagacha.", ru: "DEMORGAN — до 60 минут." }
+            },
+            {
+                id: "5.4", cat: "5", code: "5.4",
+                title: { uz: "Uy va kvartira hududida DM", ru: "DM у входа в дом" },
+                desc: {
+                    uz: "Uy yoki kvartira kirish qismida yashovchilarga sababsiz hujum qilish qat'iyan man etiladi.",
+                    ru: "Запрещено убийство или нанесение урона у входа в дом или квартиру."
+                },
+                punish: { uz: "Demorgan: 120 daqiqagacha.", ru: "DEMORGAN — до 120 минут." }
+            },
+            {
+                id: "5.5", cat: "5", code: "5.5",
+                title: { uz: "Strimermega xalal berish (Streamsnipe)", ru: "Помеха медийным личностям" },
+                desc: {
+                    uz: "Strimerni ataylab o'ldirish (DM), mashina bilan urish (DB) yoki kontent olishiga xalal berish taqiqlanadi.",
+                    ru: "Запрещено умышленно мешать стримерам (стримснайп, DM, DB)."
+                },
+                punish: { uz: "Demorgan 60 min / Blok: 3 kungacha.", ru: "DEMORGAN до 60 мин / Бан до 3 дней." }
+            },
+            {
+                id: "5.6", cat: "5", code: "5.6",
+                title: { uz: "Amoral harakatlar va Kamsitish", ru: "Аморальные действия" },
+                desc: {
+                    uz: "Inson qadr-qimmatini kamsituvchi, behayo yoki noo'rin harakatlarni o'ynash (RP qilish) taqiqlanadi.",
+                    ru: "Запрещено отыгрывать действия, унижающие человеческое достоинство (домогательства)."
+                },
+                punish: { uz: "Demorgan 30-60 min + Mute 60 min / Blok 7 kun.", ru: "DEMORGAN 30-60 мин + MUTE 60 мин / Бан до 7 дней." }
+            }
         ];
+
+        let currentCat = 'all';
 
         function renderRules(cat = 'all', query = '') {
             const list = document.getElementById('rulesList');
-            const q = query.toLowerCase();
-            let filtered = cat === 'all' ? rulesData : rulesData.filter(r => r.cat === cat);
+            const heading = document.getElementById('sectionHeading');
+            const count = document.getElementById('rulesCount');
+            const q = query.toLowerCase().trim();
+
+            let filtered = rulesData;
+
+            if (cat === 'saved') {
+                filtered = rulesData.filter(r => savedList.includes(r.id));
+                heading.innerText = currentLang === 'uz' ? '⭐ Saqlangan Qoidalar' : '⭐ Избранные правила';
+            } else if (cat !== 'all') {
+                filtered = rulesData.filter(r => r.cat === cat);
+                heading.innerText = currentLang === 'uz' ? `Bo'lim qoidalari` : `Правила раздела`;
+            } else {
+                heading.innerText = currentLang === 'uz' ? `Barcha Qoidalar` : `Все Правила`;
+            }
 
             if (q) {
                 filtered = filtered.filter(r =>
-                    r.title[currentLang].toLowerCase().includes(q) ||
                     r.code.toLowerCase().includes(q) ||
-                    r.desc[currentLang].toLowerCase().includes(q)
+                    r.title[currentLang].toLowerCase().includes(q) ||
+                    r.desc[currentLang].toLowerCase().includes(q) ||
+                    r.punish[currentLang].toLowerCase().includes(q)
                 );
             }
 
-            list.innerHTML = filtered.map(r => `
-                <div class="rule-card" onclick="openRule('${r.id}')">
-                    <span class="rule-code">${r.code}</span>
-                    <h4 class="rule-title">${r.title[currentLang]}</h4>
-                    <p class="rule-desc">${r.desc[currentLang]}</p>
-                </div>
-            `).join('');
+            count.innerText = `${filtered.length} ta`;
 
-            document.querySelectorAll('.cat-chip').forEach(c => {
-                c.classList.toggle('active', c.dataset.cat === cat);
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align:center; padding: 40px 20px; color: var(--text-muted);">
+                        <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
+                        <p>${currentLang === 'uz' ? 'Hech qanday qoida topilmadi' : 'Ничего не найдено'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = filtered.map(r => {
+                const isSaved = savedList.includes(r.id);
+                let pillClass = 'punish-jail';
+                const pText = r.punish[currentLang].toLowerCase();
+                if (pText.includes('ban') || pText.includes('бан') || pText.includes('blok')) pillClass = 'punish-ban';
+                else if (pText.includes('mute') || pText.includes('мут')) pillClass = 'punish-warn';
+
+                return `
+                    <div class="rule-card" onclick="openRuleModal('${r.id}')">
+                        <div class="rule-card-top">
+                            <span class="rule-code">${r.code}</span>
+                            <span class="punish-pill ${pillClass}">JAZO</span>
+                        </div>
+                        <h4 class="rule-title">${r.title[currentLang]}</h4>
+                        <p class="rule-desc">${r.desc[currentLang]}</p>
+                        <div class="rule-footer" onclick="event.stopPropagation()">
+                            <span>Batafsil ➔</span>
+                            <button class="bookmark-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave('${r.id}', event)">
+                                ${isSaved ? '★' : '☆'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function switchCategory(cat) {
+            currentCat = cat;
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
+            document.getElementById('rulesView').style.display = 'block';
+            document.getElementById('quizView').style.display = 'none';
+            renderRules(cat, document.getElementById('searchInput').value);
+            haptic();
+        }
+
+        function filterRules() {
+            renderRules(currentCat, document.getElementById('searchInput').value);
+        }
+
+        function toggleSave(id, e) {
+            e.stopPropagation();
+            if (savedList.includes(id)) {
+                savedList = savedList.filter(x => x !== id);
+                showToast(currentLang === 'uz' ? "Olib tashlandi" : "Удалено");
+            } else {
+                savedList.push(id);
+                showToast(currentLang === 'uz' ? "Saqlandi! ⭐" : "Сохранено! ⭐");
+            }
+            localStorage.setItem('gm_seven_saved', JSON.stringify(savedList));
+            renderRules(currentCat, document.getElementById('searchInput').value);
+            haptic();
+        }
+
+        let activeRule = null;
+        function openRuleModal(id) {
+            activeRule = rulesData.find(x => x.id === id);
+            if (!activeRule) return;
+
+            document.getElementById('modalCode').innerText = activeRule.code;
+            document.getElementById('modalTitle').innerText = activeRule.title[currentLang];
+            document.getElementById('modalBody').innerText = activeRule.desc[currentLang];
+            document.getElementById('modalPunish').innerHTML = `<strong>⚠️ ${currentLang === 'uz' ? 'JAZO MUDDATI' : 'НАКАЗАНИЕ'}:</strong><br>${activeRule.punish[currentLang]}`;
+            document.getElementById('ruleModal').classList.add('active');
+            haptic();
+        }
+
+        function closeModal(e) {
+            document.getElementById('ruleModal').classList.remove('active');
+            activeRule = null;
+        }
+
+        function copyRule() {
+            if (!activeRule) return;
+            const text = `${activeRule.code} - ${activeRule.title[currentLang]}\n${activeRule.desc[currentLang]}\nJazo: ${activeRule.punish[currentLang]}\n\n(Grand Mobile Rules by Seven)`;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(currentLang === 'uz' ? "Nusxalandi! 📋" : "Скопировано! 📋");
+                haptic();
             });
+        }
+
+        function shareRule() {
+            if (!activeRule) return;
+            const text = `Grand Mobile Qoidasi [${activeRule.code}]:\n${activeRule.title[currentLang]}\n${activeRule.desc[currentLang]}\nJazo: ${activeRule.punish[currentLang]}`;
+            if (tg && tg.openTelegramLink) {
+                tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent('https://t.me/GrandMobileRulesBot')}&text=${encodeURIComponent(text)}`);
+            } else {
+                copyRule();
+            }
         }
 
         function toggleLanguage() {
             currentLang = currentLang === 'uz' ? 'ru' : 'uz';
             document.getElementById('langBtn').innerText = currentLang === 'uz' ? '🇺🇿 UZ' : '🇷🇺 RU';
-            document.getElementById('navRules').innerText = currentLang === 'uz' ? 'Qoidalar' : 'Правила';
-            document.getElementById('navInfo').innerText = currentLang === 'uz' ? 'Info' : 'Инфо';
-            renderRules(currentCategory);
+            document.getElementById('subGreeting').innerText = currentLang === 'uz' ? "Grand Mobile RP Qoidalari" : "Правила Grand Mobile RP";
+            document.getElementById('searchInput').placeholder = currentLang === 'uz' ? "Qoidani izlash (DM, Ban, 2.1)..." : "Поиск правила (DM, Ban, 2.1)...";
+            document.getElementById('navRules').innerText = currentLang === 'uz' ? "Qoidalar" : "Правила";
+            document.getElementById('navQuiz').innerText = currentLang === 'uz' ? "Test" : "Тест";
+            document.getElementById('navSaved').innerText = currentLang === 'uz' ? "Saqlangan" : "Избранное";
+            document.getElementById('navAuthor').innerText = currentLang === 'uz' ? "Muallif" : "Автор";
+            renderRules(currentCat, document.getElementById('searchInput').value);
+            haptic();
         }
 
-        let currentCategory = 'all';
-        function switchCategory(cat) {
-            currentCategory = cat;
-            renderRules(cat, document.getElementById('searchInput').value);
+        function showToast(msg) {
+            const t = document.getElementById('toastMsg');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2200);
         }
 
-        function filterRules() {
-            renderRules(currentCategory, document.getElementById('searchInput').value);
+        function haptic() {
+            if (tg && tg.HapticFeedback) {
+                try { tg.HapticFeedback.impactOccurred('medium'); } catch(e) {}
+            }
         }
 
-        function openRule(id) {
-            const r = rulesData.find(x => x.id === id);
-            document.getElementById('modalCode').innerText = r.code;
-            document.getElementById('modalTitle').innerText = r.title[currentLang];
-            document.getElementById('modalBody').innerText = r.desc[currentLang];
-            document.getElementById('modalPunishment').innerText = (currentLang === 'uz' ? "JAZO: " : "НАКАЗАНИЕ: ") + r.pun[currentLang];
-            document.getElementById('ruleModal').classList.add('active');
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        // NAVIGATION
+        function switchNav(tab, el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+
+            if (tab === 'rules') {
+                document.getElementById('rulesView').style.display = 'block';
+                document.getElementById('quizView').style.display = 'none';
+                switchCategory('all');
+            } else if (tab === 'quiz') {
+                document.getElementById('rulesView').style.display = 'none';
+                document.getElementById('quizView').style.display = 'block';
+                initQuiz();
+            } else if (tab === 'saved') {
+                document.getElementById('rulesView').style.display = 'block';
+                document.getElementById('quizView').style.display = 'none';
+                switchCategory('saved');
+            } else if (tab === 'author') {
+                alert(currentLang === 'uz' ?
+                    "👑 Loyiha Muallifi: SEVEN\nGrand Mobile o'yinchilari uchun maxsus qoidalar bazasi va bot tizimi.\nVersiya: 2.0 Cyber Green" :
+                    "👑 Автор Проекта: SEVEN\nБаза правил и бот для игроков Grand Mobile.\nВерсия: 2.0 Cyber Green"
+                );
+            }
+            haptic();
         }
 
-        function closeModal(e) {
-            document.getElementById('ruleModal').classList.remove('active');
+        // QUIZ SYSTEM
+        const quizList = [
+            {
+                q: "1.2 qoidasiga ko'ra o'zini admin deb tanishtirishga qanday jazo beriladi?",
+                options: ["3-7 kun ban yoki butunlay ban", "Faqat 10 daqiqa mute", "Hech qanday jazo yo'q", "30 daqiqa demorgan"],
+                ans: 0
+            },
+            {
+                q: "O'yinda kuniga ko'pi bilan qancha qiymatdagi mulkni sovg'a qilish mumkin (4.5)?",
+                options: ["Cheklov yo'q", "30.000.000 rubl", "5.000.000 rubl", "100.000.000 rubl"],
+                ans: 1
+            },
+            {
+                q: "Real pulga o'yin valyutasi yoki akkaunt sotish oqibati (4.4)?",
+                options: ["Permaban (Butunlay blok) + Mulkni nollash", "Ogohlantirish", "1 kun ban", "Jazo berilmaydi"],
+                ans: 0
+            }
+        ];
+
+        let qIndex = 0;
+        function initQuiz() {
+            qIndex = 0;
+            loadQuiz();
         }
 
-        function showInfo() {
-            alert(currentLang === 'uz' ? "Grand Mobile Rules v1.2\nBarcha qoidalar I-V bo'limlari kiritildi." : "Grand Mobile Rules v1.2\nВведены все правила разделов I-V.");
+        function loadQuiz() {
+            const item = quizList[qIndex];
+            document.getElementById('quizScore').innerText = `${qIndex + 1} / ${quizList.length}`;
+            document.getElementById('quizQuestion').innerText = item.q;
+            document.getElementById('quizNextBtn').style.display = 'none';
+
+            const optBox = document.getElementById('quizOptions');
+            optBox.innerHTML = item.options.map((opt, i) => `
+                <div class="quiz-opt" onclick="checkQuiz(${i})">${opt}</div>
+            `).join('');
         }
 
-        const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
-        if (user) {
-            document.getElementById('userName').innerText = user.first_name;
-            document.getElementById('userAvatar').innerText = user.first_name.substring(0, 2).toUpperCase();
+        function checkQuiz(idx) {
+            const item = quizList[qIndex];
+            const opts = document.querySelectorAll('.quiz-opt');
+            if (idx === item.ans) {
+                opts[idx].classList.add('correct');
+            } else {
+                opts[idx].classList.add('incorrect');
+                opts[item.ans].classList.add('correct');
+            }
+            document.getElementById('quizNextBtn').style.display = 'block';
+            haptic();
+        }
+
+        function nextQuiz() {
+            qIndex++;
+            if (qIndex < quizList.length) {
+                loadQuiz();
+            } else {
+                document.getElementById('quizOptions').innerHTML = `
+                    <div style="padding: 20px 0; color: var(--accent); font-weight: 700; font-size: 16px;">
+                        🏆 Test yakunlandi! Qoidalarni a'lo darajada o'zlashtirdingiz.
+                    </div>
+                `;
+                document.getElementById('quizNextBtn').style.display = 'none';
+            }
+        }
+
+        // Init Telegram User
+        const u = tg.initDataUnsafe && tg.initDataUnsafe.user;
+        if (u) {
+            document.getElementById('userName').innerText = u.first_name || 'Geymer';
+            document.getElementById('userAvatar').innerText = (u.first_name || '7').substring(0, 1).toUpperCase();
         }
 
         renderRules();
